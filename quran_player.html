@@ -142,25 +142,24 @@
             height: 100%;
         }
 
-        /* ===== الكود المعدل هنا ===== */
+        /* ===== تعديل CSS الخاص بالصورة (الحل الأول) ===== */
         .image-container {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0; /* تم حذف الفراغ */
-            overflow: hidden; /* تم تغييرها */
-            background-color: #000; /* تمت إضافة خلفية سوداء */
+            padding: 20px; /* إضافة هامش داخلي حول الصورة */
+            overflow: hidden;
+            background-color: var(--primary-bg); /* استخدام لون الخلفية الأساسي بدلاً من الأسود */
         }
         
-        /* ===== والكود المعدل هنا ===== */
         #quranImage {
-            width: 100%; /* تم التغيير من max-width */
-            height: 100%; /* تم التغيير من max-height */
-            object-fit: contain; /* يبقي على أبعاد الصورة صحيحة */
-            border-radius: 0; /* تم حذف الحواف الدائرية */
-            box-shadow: none; /* تم حذف الظل */
-            border: none; /* تم حذف الحدود */
+            max-width: 100%; /* لضمان عدم تجاوز الصورة عرض الحاوية */
+            max-height: 100%; /* لضمان عدم تجاوز الصورة ارتفاع الحاوية */
+            object-fit: contain; /* يحافظ على أبعاد الصورة صحيحة */
+            border-radius: 8px; /* حواف دائرية لجمالية التصميم */
+            box-shadow: var(--shadow); /* إضافة ظل خفيف */
+            border: 1px solid var(--border-color); /* إضافة إطار خفيف */
         }
 
         .player-container {
@@ -168,6 +167,7 @@
             padding: 20px;
             border-top: 1px solid var(--border-color);
             box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+            z-index: 10;
         }
         
         #currentThumnTitle {
@@ -270,19 +270,34 @@
             width: 70px;
         }
         
+        /* ===== تعديل شاشة التحميل لإظهار النسبة المئوية (الحل الثاني) ===== */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
+            background-color: rgba(255, 255, 255, 0.85); /* خلفية بيضاء شبه شفافة */
+            backdrop-filter: blur(5px);
+            color: var(--text-primary);
             display: none;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
+            text-align: center;
             z-index: 1000;
+        }
+        
+        #loadingText {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        #progressPercentage {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-top: 10px;
+            display: block;
         }
     </style>
 </head>
@@ -336,14 +351,50 @@
             </div>
         </div>
         <audio id="audioPlayer" style="display:none;"></audio>
-        <div id="loadingOverlay" class="loading-overlay">جاري تحميل وإنشاء الفيديو...</div>
+        
+        <div id="loadingOverlay" class="loading-overlay">
+            <div>
+                <span id="loadingText">جاري تهيئة العملية...</span>
+                <span id="progressPercentage"></span>
+            </div>
+        </div>
+
     </main>
 
     <script>
         const { createFFmpeg, fetchFile } = FFmpeg;
+
+        // --- عناصر التحكم ---
+        const hizbTitle = document.getElementById('hizbTitle');
+        const athmanList = document.getElementById('athmanList');
+        const searchInput = document.getElementById('searchInput');
+        const quranImage = document.getElementById('quranImage');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const speedControl = document.getElementById('speedControl');
+        const repeatCountInput = document.getElementById('repeatCount');
+        const currentThumnTitle = document.getElementById('currentThumnTitle');
+        const timeline = document.getElementById('timeline');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        // ===== إضافة عناصر جديدة للتحكم في نص التحميل (الحل الثاني) =====
+        const loadingText = document.getElementById('loadingText');
+        const progressPercentage = document.getElementById('progressPercentage');
+
+        // ===== تعديل إعداد ffmpeg ليشمل متتبع التقدم (الحل الثاني) =====
         const ffmpeg = createFFmpeg({
-            log: true,
+            log: false, // تم إيقاف الـ log لتنظيف الكونسول، يمكنك تفعيله إلى true عند الحاجة
             corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+            progress: ({ ratio }) => {
+                const percentage = Math.round(ratio * 100);
+                if (percentage >= 0 && percentage <= 100) {
+                    loadingText.textContent = 'جاري دمج الصوت والصورة...';
+                    progressPercentage.textContent = `${percentage}%`;
+                }
+            },
         });
         
         // --- بيانات المشروع ---
@@ -351,7 +402,6 @@
         const GITHUB_REPO = "quran_nayhy";
         const GITHUB_BRANCH = "main";
         
-        // المسارات الصحيحة داخل المستودع
         const AUDIO_BASE_PATH = `audio/audio/hizb_01/`;
         const IMAGE_BASE_PATH = `images/hizb_01/`;
 
@@ -374,26 +424,9 @@
             }
         ];
 
-        // --- عناصر التحكم ---
-        const hizbTitle = document.getElementById('hizbTitle');
-        const athmanList = document.getElementById('athmanList');
-        const searchInput = document.getElementById('searchInput');
-        const quranImage = document.getElementById('quranImage');
-        const audioPlayer = document.getElementById('audioPlayer');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const speedControl = document.getElementById('speedControl');
-        const repeatCountInput = document.getElementById('repeatCount');
-        const currentThumnTitle = document.getElementById('currentThumnTitle');
-        const timeline = document.getElementById('timeline');
-        const currentTimeEl = document.getElementById('currentTime');
-        const totalTimeEl = document.getElementById('totalTime');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-
         // --- متغيرات الحالة ---
         let currentHizbIndex = 0;
-        let currentThumnIndex = -1; // -1 to indicate nothing is selected initially
+        let currentThumnIndex = -1;
         let repeatCounter = 0;
         let isPlaying = false;
 
@@ -458,23 +491,37 @@
             }
         }
         
+        // ===== تعديل وظيفة إنشاء الفيديو بالكامل (الحل الثاني) =====
         async function createVideo(index) {
+            loadingText.textContent = 'جاري تهيئة العملية...';
+            progressPercentage.textContent = '';
             loadingOverlay.style.display = 'flex';
+
             try {
                 if (!ffmpeg.isLoaded()) {
-                    loadingOverlay.textContent = 'جاري تحميل مكتبة الفيديو (مرة واحدة فقط)...';
+                    loadingText.textContent = 'جاري تحميل مكتبة الفيديو (مرة واحدة)...';
                     await ffmpeg.load();
                 }
-                loadingOverlay.textContent = 'جاري دمج الصوت والصورة...';
                 
                 const thumn = quranData[currentHizbIndex].athman[index];
                 const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
                 const imageURL = GITHUB_RAW_BASE_URL + IMAGE_BASE_PATH + thumn.image_file;
 
-                ffmpeg.FS('writeFile', 'image.jpg', await fetchFile(imageURL));
+                loadingText.textContent = 'جاري تحميل ملف الصوت...';
+                progressPercentage.textContent = '';
                 ffmpeg.FS('writeFile', 'audio.mp3', await fetchFile(audioURL));
 
+                loadingText.textContent = 'جاري تحميل ملف الصورة...';
+                ffmpeg.FS('writeFile', 'image.jpg', await fetchFile(imageURL));
+                
+                // سيبدأ عداد التقدم بالعمل تلقائيًا من هنا بفضل الإعداد الجديد
+                loadingText.textContent = 'جاري دمج الصوت والصورة...';
+                progressPercentage.textContent = '0%';
+                
                 await ffmpeg.run('-r', '1', '-i', 'image.jpg', '-i', 'audio.mp3', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', 'output.mp4');
+
+                loadingText.textContent = 'اكتمل الدمج! جاري تجهيز التحميل...';
+                progressPercentage.textContent = '✔️';
 
                 const data = ffmpeg.FS('readFile', 'output.mp4');
                 const videoBlob = new Blob([data.buffer], { type: 'video/mp4' });
@@ -487,10 +534,12 @@
 
             } catch(e) {
                 console.error("Error creating video:", e);
-                alert("حدث خطأ أثناء إنشاء الفيديو. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+                alert(`حدث خطأ أثناء إنشاء الفيديو. قد تكون المشكلة في الاتصال بالشبكة أو عدم توافق المتصفح. يرجى المحاولة مرة أخرى.\n\nتفاصيل الخطأ: ${e.message}`);
             } finally {
-                loadingOverlay.style.display = 'none';
-                loadingOverlay.textContent = 'جاري تحميل وإنشاء الفيديو...';
+                // إخفاء شاشة التحميل بعد ثانيتين لإعطاء المستخدم فرصة لرؤية علامة الصح
+                setTimeout(() => {
+                     loadingOverlay.style.display = 'none';
+                }, 2000);
             }
         }
 
@@ -518,7 +567,7 @@
         });
 
         playPauseBtn.addEventListener('click', () => {
-            if(currentThumnIndex < 0) { // If nothing is selected, play the first one
+            if(currentThumnIndex < 0) {
                 currentThumnIndex = 0;
                 loadThumn(true);
                 return;
@@ -550,7 +599,7 @@
         function playNext() {
             currentThumnIndex++;
             if (currentThumnIndex >= quranData[currentHizbIndex].athman.length) {
-                currentThumnIndex = 0; // يعود للأول
+                currentThumnIndex = 0;
             }
             loadThumn(isPlaying);
         }
@@ -558,7 +607,7 @@
         function playPrev() {
              currentThumnIndex--;
             if (currentThumnIndex < 0) {
-                currentThumnIndex = quranData[currentHizbIndex].athman.length - 1; // يذهب للأخير
+                currentThumnIndex = quranData[currentHizbIndex].athman.length - 1;
             }
             loadThumn(isPlaying);
         }
