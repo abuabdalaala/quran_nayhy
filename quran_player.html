@@ -7,8 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
-
+    
     <style>
         :root {
             --primary-bg: #F8F9FA;
@@ -19,13 +18,11 @@
             --border-color: #DEE2E6;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
-
         * {
             box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
         body {
             font-family: 'Tajawal', sans-serif;
             margin: 0;
@@ -35,7 +32,6 @@
             height: 100vh;
             overflow: hidden;
         }
-
         .sidebar {
             width: 400px;
             background-color: var(--secondary-bg);
@@ -44,24 +40,21 @@
             flex-direction: column;
             transition: width 0.3s;
         }
-
         .sidebar-header {
             padding: 20px;
             text-align: center;
             border-bottom: 1px solid var(--border-color);
         }
-        
         #hizbTitle {
             font-size: 1.5rem;
             font-weight: 800;
             color: var(--accent-color);
+            margin-bottom: 15px; /* إضافة مسافة سفلية */
         }
-
         .search-container {
             padding: 15px;
             border-bottom: 1px solid var(--border-color);
         }
-
         #searchInput {
             width: 100%;
             padding: 12px;
@@ -70,7 +63,6 @@
             font-family: 'Tajawal', sans-serif;
             font-size: 1rem;
         }
-
         .athman-list {
             list-style: none;
             padding: 0;
@@ -78,7 +70,6 @@
             overflow-y: auto;
             flex-grow: 1;
         }
-
         .athman-list-item {
             display: flex;
             align-items: center;
@@ -88,27 +79,22 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
         .athman-list-item:hover {
             background-color: #F1F3F5;
         }
-        
         .athman-list-item.active {
             background-color: var(--accent-color);
             color: var(--secondary-bg);
         }
-        
         .athman-list-item.active .thumn-name,
         .athman-list-item.active .thumn-number {
              color: var(--secondary-bg);
         }
-        
         .thumn-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         .thumn-number {
             font-size: 1rem;
             font-weight: 700;
@@ -116,24 +102,11 @@
             width: 30px;
             text-align: center;
         }
-        
         .thumn-name {
             font-size: 0.95rem;
             line-height: 1.6;
         }
-
-        .download-btn {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        
-        .download-btn:hover {
-            color: var(--accent-color);
-        }
+        /* تم حذف كود زر التحميل الصغير */
 
         .main-content {
             flex-grow: 1;
@@ -141,27 +114,23 @@
             flex-direction: column;
             height: 100%;
         }
-
-        /* ===== تعديل CSS الخاص بالصورة (الحل الأول) ===== */
         .image-container {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px; /* إضافة هامش داخلي حول الصورة */
+            padding: 20px;
             overflow: hidden;
-            background-color: var(--primary-bg); /* استخدام لون الخلفية الأساسي بدلاً من الأسود */
+            background-color: var(--primary-bg);
         }
-        
         #quranImage {
-            max-width: 100%; /* لضمان عدم تجاوز الصورة عرض الحاوية */
-            max-height: 100%; /* لضمان عدم تجاوز الصورة ارتفاع الحاوية */
-            object-fit: contain; /* يحافظ على أبعاد الصورة صحيحة */
-            border-radius: 8px; /* حواف دائرية لجمالية التصميم */
-            box-shadow: var(--shadow); /* إضافة ظل خفيف */
-            border: 1px solid var(--border-color); /* إضافة إطار خفيف */
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }
-
         .player-container {
             background-color: var(--secondary-bg);
             padding: 20px;
@@ -169,14 +138,12 @@
             box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
             z-index: 10;
         }
-        
         #currentThumnTitle {
             text-align: center;
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 15px;
         }
-
         .player-controls {
             display: flex;
             justify-content: center;
@@ -184,7 +151,6 @@
             gap: 20px;
             margin-bottom: 15px;
         }
-
         .player-controls button {
             background: none;
             border: none;
@@ -197,13 +163,11 @@
             color: var(--accent-color);
             transform: scale(1.1);
         }
-
         .timeline-container {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         #timeline {
             width: 100%;
             -webkit-appearance: none;
@@ -214,7 +178,6 @@
             outline: none;
             cursor: pointer;
         }
-
         #timeline::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -224,7 +187,6 @@
             border-radius: 50%;
             cursor: pointer;
         }
-
         #timeline::-moz-range-thumb {
             width: 18px;
             height: 18px;
@@ -232,14 +194,12 @@
             border-radius: 50%;
             cursor: pointer;
         }
-        
         .time-display {
             font-size: 0.9rem;
             color: var(--text-secondary);
             width: 50px;
             text-align: center;
         }
-        
         .advanced-controls-container {
             display: flex;
             justify-content: center;
@@ -247,17 +207,14 @@
             gap: 40px;
             margin-top: 20px;
         }
-        
         .control-group {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
         .control-group label {
             font-size: 1rem;
         }
-        
         .control-group select, .control-group input {
             padding: 8px 12px;
             border-radius: 8px;
@@ -265,40 +222,29 @@
             font-family: 'Tajawal', sans-serif;
             font-size: 0.9rem;
         }
-
         .control-group input[type="number"] {
             width: 70px;
         }
         
-        /* ===== تعديل شاشة التحميل لإظهار النسبة المئوية (الحل الثاني) ===== */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.85); /* خلفية بيضاء شبه شفافة */
-            backdrop-filter: blur(5px);
-            color: var(--text-primary);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 1000;
-        }
-        
-        #loadingText {
-            font-size: 1.5rem;
+        /* ===== كود الزر الجديد لتحميل الحزب ===== */
+        .button-primary {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
             font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
         }
-        
-        #progressPercentage {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent-color);
-            margin-top: 10px;
-            display: block;
+
+        .button-primary:hover {
+            background-color: #2471A3;
+            transform: scale(1.05);
         }
+
     </style>
 </head>
 <body>
@@ -306,6 +252,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <h1 id="hizbTitle"></h1>
+            <button id="downloadHizbBtn" class="button-primary">تحميل الحزب كاملاً</button>
         </div>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="ابحث عن ثمن...">
@@ -351,19 +298,9 @@
             </div>
         </div>
         <audio id="audioPlayer" style="display:none;"></audio>
-        
-        <div id="loadingOverlay" class="loading-overlay">
-            <div>
-                <span id="loadingText">جاري تهيئة العملية...</span>
-                <span id="progressPercentage"></span>
-            </div>
-        </div>
-
     </main>
 
     <script>
-        const { createFFmpeg, fetchFile } = FFmpeg;
-
         // --- عناصر التحكم ---
         const hizbTitle = document.getElementById('hizbTitle');
         const athmanList = document.getElementById('athmanList');
@@ -379,32 +316,15 @@
         const timeline = document.getElementById('timeline');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        // ===== إضافة عناصر جديدة للتحكم في نص التحميل (الحل الثاني) =====
-        const loadingText = document.getElementById('loadingText');
-        const progressPercentage = document.getElementById('progressPercentage');
-
-        // ===== تعديل إعداد ffmpeg ليشمل متتبع التقدم (الحل الثاني) =====
-        const ffmpeg = createFFmpeg({
-            log: false, // تم إيقاف الـ log لتنظيف الكونسول، يمكنك تفعيله إلى true عند الحاجة
-            corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
-            progress: ({ ratio }) => {
-                const percentage = Math.round(ratio * 100);
-                if (percentage >= 0 && percentage <= 100) {
-                    loadingText.textContent = 'جاري دمج الصوت والصورة...';
-                    progressPercentage.textContent = `${percentage}%`;
-                }
-            },
-        });
+        // ===== إضافة متغير للزر الجديد =====
+        const downloadHizbBtn = document.getElementById('downloadHizbBtn');
         
         // --- بيانات المشروع ---
         const GITHUB_USER = "abuabdalaala";
         const GITHUB_REPO = "quran_nayhy";
         const GITHUB_BRANCH = "main";
-        
         const AUDIO_BASE_PATH = `audio/audio/hizb_01/`;
         const IMAGE_BASE_PATH = `images/hizb_01/`;
-
         const GITHUB_RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/`;
 
         const quranData = [
@@ -444,12 +364,12 @@
                 li.className = 'athman-list-item';
                 li.dataset.index = index;
 
+                // ===== تم حذف زر التحميل الصغير من هنا =====
                 li.innerHTML = `
                     <div class="thumn-info">
                         <span class="thumn-number">${index + 1}</span>
                         <span class="thumn-name">${thumn.thumn_name}</span>
                     </div>
-                    <button class="download-btn" title="تحميل فيديو (صوت + صورة)">⤓</button>
                 `;
 
                 li.querySelector('.thumn-info').addEventListener('click', () => {
@@ -461,11 +381,6 @@
                     }
                 });
                 
-                li.querySelector('.download-btn').addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    await createVideo(index);
-                });
-
                 athmanList.appendChild(li);
             });
             updateActiveListItem();
@@ -483,7 +398,6 @@
             
             currentThumnTitle.textContent = thumn.thumn_name;
             repeatCounter = parseInt(repeatCountInput.value);
-
             updateActiveListItem();
 
             if (playImmediately) {
@@ -491,57 +405,7 @@
             }
         }
         
-        // ===== تعديل وظيفة إنشاء الفيديو بالكامل (الحل الثاني) =====
-        async function createVideo(index) {
-            loadingText.textContent = 'جاري تهيئة العملية...';
-            progressPercentage.textContent = '';
-            loadingOverlay.style.display = 'flex';
-
-            try {
-                if (!ffmpeg.isLoaded()) {
-                    loadingText.textContent = 'جاري تحميل مكتبة الفيديو (مرة واحدة)...';
-                    await ffmpeg.load();
-                }
-                
-                const thumn = quranData[currentHizbIndex].athman[index];
-                const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
-                const imageURL = GITHUB_RAW_BASE_URL + IMAGE_BASE_PATH + thumn.image_file;
-
-                loadingText.textContent = 'جاري تحميل ملف الصوت...';
-                progressPercentage.textContent = '';
-                ffmpeg.FS('writeFile', 'audio.mp3', await fetchFile(audioURL));
-
-                loadingText.textContent = 'جاري تحميل ملف الصورة...';
-                ffmpeg.FS('writeFile', 'image.jpg', await fetchFile(imageURL));
-                
-                // سيبدأ عداد التقدم بالعمل تلقائيًا من هنا بفضل الإعداد الجديد
-                loadingText.textContent = 'جاري دمج الصوت والصورة...';
-                progressPercentage.textContent = '0%';
-                
-                await ffmpeg.run('-r', '1', '-i', 'image.jpg', '-i', 'audio.mp3', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', 'output.mp4');
-
-                loadingText.textContent = 'اكتمل الدمج! جاري تجهيز التحميل...';
-                progressPercentage.textContent = '✔️';
-
-                const data = ffmpeg.FS('readFile', 'output.mp4');
-                const videoBlob = new Blob([data.buffer], { type: 'video/mp4' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(videoBlob);
-                a.download = `${thumn.thumn_name}.mp4`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-            } catch(e) {
-                console.error("Error creating video:", e);
-                alert(`حدث خطأ أثناء إنشاء الفيديو. قد تكون المشكلة في الاتصال بالشبكة أو عدم توافق المتصفح. يرجى المحاولة مرة أخرى.\n\nتفاصيل الخطأ: ${e.message}`);
-            } finally {
-                // إخفاء شاشة التحميل بعد ثانيتين لإعطاء المستخدم فرصة لرؤية علامة الصح
-                setTimeout(() => {
-                     loadingOverlay.style.display = 'none';
-                }, 2000);
-            }
-        }
+        // ===== تم حذف وظيفة إنشاء الفيديو createVideo بالكامل =====
 
         function updateActiveListItem() {
             const listItems = athmanList.querySelectorAll('.athman-list-item');
@@ -559,6 +423,31 @@
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+        
+        // ===== وظيفة جديدة لتحميل كل الملفات الصوتية =====
+        function downloadAllAudio() {
+            const hizb = quranData[currentHizbIndex];
+            if (!hizb) {
+                alert("لا يوجد حزب محدد لتحميله.");
+                return;
+            }
+
+            alert(`سيتم الآن بدء تحميل ${hizb.athman.length} ملفات صوتية. قد يطلب منك المتصفح السماح بذلك.`);
+
+            hizb.athman.forEach(thumn => {
+                const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
+                
+                // إنشاء رابط غير مرئي في الصفحة
+                const a = document.createElement('a');
+                a.href = audioURL;
+                a.download = thumn.audio_file; // اسم الملف عند التحميل
+                
+                // إضافته للصفحة، الضغط عليه برمجياً، ثم حذفه
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
         }
 
         // --- الأحداث ---
@@ -578,24 +467,23 @@
                 audioPlayer.pause();
             }
         });
+        
+        // ===== ربط الزر الجديد بالوظيفة الجديدة =====
+        downloadHizbBtn.addEventListener('click', downloadAllAudio);
 
         audioPlayer.addEventListener('play', () => { isPlaying = true; playPauseBtn.textContent = '⏸'; });
         audioPlayer.addEventListener('pause', () => { isPlaying = false; playPauseBtn.textContent = '⏯'; });
-        
         audioPlayer.addEventListener('loadedmetadata', () => {
             totalTimeEl.textContent = formatTime(audioPlayer.duration);
             timeline.max = audioPlayer.duration;
         });
-
         audioPlayer.addEventListener('timeupdate', () => {
             currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
             timeline.value = audioPlayer.currentTime;
         });
-        
         timeline.addEventListener('input', () => {
             audioPlayer.currentTime = timeline.value;
         });
-
         function playNext() {
             currentThumnIndex++;
             if (currentThumnIndex >= quranData[currentHizbIndex].athman.length) {
@@ -603,7 +491,6 @@
             }
             loadThumn(isPlaying);
         }
-        
         function playPrev() {
              currentThumnIndex--;
             if (currentThumnIndex < 0) {
@@ -611,14 +498,11 @@
             }
             loadThumn(isPlaying);
         }
-
         nextBtn.addEventListener('click', playNext);
         prevBtn.addEventListener('click', playPrev);
-        
         speedControl.addEventListener('change', () => {
             audioPlayer.playbackRate = parseFloat(speedControl.value);
         });
-
         audioPlayer.addEventListener('ended', () => {
             repeatCounter = parseInt(repeatCountInput.value);
             repeatCounter--;
