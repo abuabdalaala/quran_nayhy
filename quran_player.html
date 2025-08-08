@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <style>
         :root {
@@ -272,7 +274,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <h1 id="hizbTitle"></h1>
-            <button id="downloadHizbBtn" class="button-primary">تحميل الحزب كاملاً</button>
+            <button id="downloadHizbBtn" class="button-primary">تحميل الحزب كاملاً (ZIP)</button>
         </div>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="ابحث عن ثمن...">
@@ -327,8 +329,6 @@
         </div>
     </main>
     
-    <iframe id="downloadFrame" style="display:none;"></iframe>
-
     <script>
         const hizbTitle = document.getElementById('hizbTitle');
         const athmanList = document.getElementById('athmanList');
@@ -349,11 +349,6 @@
         const loadingText = document.getElementById('loadingText');
         const progressPercentage = document.getElementById('progressPercentage');
         
-        // ===== إضافة متغير للإطار المخفي =====
-        const downloadFrame = document.getElementById('downloadFrame');
-
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
-
         const GITHUB_USER = "abuabdalaala";
         const GITHUB_REPO = "quran_nayhy";
         const GITHUB_BRANCH = "main";
@@ -454,45 +449,73 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
         
-        // ===== وظيفة التحميل النهائية باستخدام تقنية الـ iframe =====
-        async function downloadAllAudio() {
+        // ===== وظيفة التحميل النهائية باستخدام تقنية ZIP =====
+        async function downloadAllAudioAsZip() {
             const hizb = quranData[currentHizbIndex];
             if (!hizb) {
                 alert("لا يوجد حزب محدد لتحميله.");
                 return;
             }
 
-            loadingText.textContent = 'التحضير لبدء التحميل...';
+            loadingText.textContent = 'جاري تهيئة العملية...';
             progressPercentage.textContent = '';
             loadingOverlay.style.display = 'flex';
 
-            let counter = 1;
-            for (const thumn of hizb.athman) {
-                loadingText.textContent = `جاري تحميل الملف ${counter} من ${hizb.athman.length}`;
+            try {
+                const zip = new JSZip();
+                let counter = 1;
+
+                for (const thumn of hizb.athman) {
+                    loadingText.textContent = `جاري تحميل الملف ${counter} من ${hizb.athman.length}...`;
+                    progressPercentage.textContent = thumn.audio_file;
+
+                    const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
+                    const response = await fetch(audioURL);
+                    
+                    if (!response.ok) {
+                        throw new Error(`فشل تحميل الملف: ${thumn.audio_file}`);
+                    }
+                    
+                    const audioBlob = await response.blob();
+                    zip.file(thumn.audio_file, audioBlob);
+                    counter++;
+                }
+
+                loadingText.textContent = 'جاري ضغط الملفات...';
                 
-                const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
-                
-                // هنا نستخدم الإطار المخفي لبدء التحميل
-                downloadFrame.src = audioURL;
-                
-                counter++;
-                
-                // زيادة الفاصل الزمني لضمان الاستقرار
-                await sleep(1500); 
+                const zipBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
+                    // تحديث النسبة المئوية لعملية الضغط
+                    if (metadata.percent) {
+                         progressPercentage.textContent = `${Math.round(metadata.percent)}%`;
+                    }
+                });
+
+                loadingText.textContent = 'اكتمل! جاري تجهيز التحميل...';
+                progressPercentage.textContent = '✔️';
+
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${hizb.hizb_name}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+            } catch (error) {
+                console.error("Error creating ZIP file:", error);
+                alert("حدث خطأ فادح أثناء إنشاء ملف الـ ZIP. يرجى التحقق من الكونسول للمزيد من التفاصيل.");
+            } finally {
+                setTimeout(() => {
+                     loadingOverlay.style.display = 'none';
+                }, 2000);
             }
-            
-            loadingText.textContent = 'اكتملت كل عمليات التحميل!';
-            progressPercentage.textContent = '✔️';
-            setTimeout(() => {
-                 loadingOverlay.style.display = 'none';
-            }, 2000);
         }
 
         // --- الأحداث ---
         searchInput.addEventListener('input', (e) => {
             populateAthmanList(e.target.value);
         });
-
         playPauseBtn.addEventListener('click', () => {
             if(currentThumnIndex < 0) {
                 currentThumnIndex = 0;
@@ -506,7 +529,7 @@
             }
         });
         
-        downloadHizbBtn.addEventListener('click', downloadAllAudio);
+        downloadHizbBtn.addEventListener('click', downloadAllAudioAsZip);
 
         audioPlayer.addEventListener('play', () => { isPlaying = true; playPauseBtn.textContent = '⏸'; });
         audioPlayer.addEventListener('pause', () => { isPlaying = false; playPauseBtn.textContent = '⏯'; });
