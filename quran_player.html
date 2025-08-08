@@ -326,6 +326,8 @@
             </div>
         </div>
     </main>
+    
+    <iframe id="downloadFrame" style="display:none;"></iframe>
 
     <script>
         const hizbTitle = document.getElementById('hizbTitle');
@@ -347,6 +349,9 @@
         const loadingText = document.getElementById('loadingText');
         const progressPercentage = document.getElementById('progressPercentage');
         
+        // ===== إضافة متغير للإطار المخفي =====
+        const downloadFrame = document.getElementById('downloadFrame');
+
         const sleep = ms => new Promise(r => setTimeout(r, ms));
 
         const GITHUB_USER = "abuabdalaala";
@@ -449,6 +454,7 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
         
+        // ===== وظيفة التحميل النهائية باستخدام تقنية الـ iframe =====
         async function downloadAllAudio() {
             const hizb = quranData[currentHizbIndex];
             if (!hizb) {
@@ -462,21 +468,17 @@
 
             let counter = 1;
             for (const thumn of hizb.athman) {
-                loadingText.textContent = `جاري بدء تحميل الملف ${counter} من ${hizb.athman.length}`;
+                loadingText.textContent = `جاري تحميل الملف ${counter} من ${hizb.athman.length}`;
                 
                 const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
                 
-                const a = document.createElement('a');
-                a.href = audioURL;
-                a.download = thumn.audio_file;
-                
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                // هنا نستخدم الإطار المخفي لبدء التحميل
+                downloadFrame.src = audioURL;
                 
                 counter++;
                 
-                await sleep(500); 
+                // زيادة الفاصل الزمني لضمان الاستقرار
+                await sleep(1500); 
             }
             
             loadingText.textContent = 'اكتملت كل عمليات التحميل!';
@@ -486,6 +488,7 @@
             }, 2000);
         }
 
+        // --- الأحداث ---
         searchInput.addEventListener('input', (e) => {
             populateAthmanList(e.target.value);
         });
@@ -549,6 +552,7 @@
             }
         });
 
+        // --- بدء التشغيل ---
         populateAthmanList();
     </script>
 
