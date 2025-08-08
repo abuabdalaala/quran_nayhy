@@ -449,7 +449,6 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
         
-        // ===== وظيفة التحميل النهائية باستخدام تقنية ZIP =====
         async function downloadAllAudioAsZip() {
             const hizb = quranData[currentHizbIndex];
             if (!hizb) {
@@ -466,8 +465,12 @@
                 let counter = 1;
 
                 for (const thumn of hizb.athman) {
+                    // إنشاء اسم ملف نظيف وواضح
+                    const cleanName = thumn.thumn_name.replace(/\.{3,}/g, '').trim(); 
+                    const finalFilename = `${cleanName}.mp3`;
+
                     loadingText.textContent = `جاري تحميل الملف ${counter} من ${hizb.athman.length}...`;
-                    progressPercentage.textContent = thumn.audio_file;
+                    progressPercentage.textContent = finalFilename; 
 
                     const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
                     const response = await fetch(audioURL);
@@ -477,14 +480,13 @@
                     }
                     
                     const audioBlob = await response.blob();
-                    zip.file(thumn.audio_file, audioBlob);
+                    zip.file(finalFilename, audioBlob); 
                     counter++;
                 }
 
                 loadingText.textContent = 'جاري ضغط الملفات...';
                 
                 const zipBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
-                    // تحديث النسبة المئوية لعملية الضغط
                     if (metadata.percent) {
                          progressPercentage.textContent = `${Math.round(metadata.percent)}%`;
                     }
@@ -495,7 +497,7 @@
 
                 const url = URL.createObjectURL(zipBlob);
                 const a = document.createElement('a');
-                a.href = url;
+a.href = url;
                 a.download = `${hizb.hizb_name}.zip`;
                 document.body.appendChild(a);
                 a.click();
