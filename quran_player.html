@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary-bg: #F8F9FA;
@@ -49,7 +49,7 @@
             font-size: 1.5rem;
             font-weight: 800;
             color: var(--accent-color);
-            margin-bottom: 15px; /* إضافة مسافة سفلية */
+            margin-bottom: 15px;
         }
         .search-container {
             padding: 15px;
@@ -106,8 +106,6 @@
             font-size: 0.95rem;
             line-height: 1.6;
         }
-        /* تم حذف كود زر التحميل الصغير */
-
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -225,8 +223,6 @@
         .control-group input[type="number"] {
             width: 70px;
         }
-        
-        /* ===== كود الزر الجديد لتحميل الحزب ===== */
         .button-primary {
             background-color: var(--accent-color);
             color: white;
@@ -239,12 +235,36 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
-
         .button-primary:hover {
             background-color: #2471A3;
             transform: scale(1.05);
         }
-
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            color: var(--text-primary);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1000;
+        }
+        #loadingText {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        #progressPercentage {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-top: 10px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -258,7 +278,7 @@
             <input type="text" id="searchInput" placeholder="ابحث عن ثمن...">
         </div>
         <ul class="athman-list" id="athmanList">
-            </ul>
+        </ul>
     </aside>
 
     <main class="main-content">
@@ -298,10 +318,16 @@
             </div>
         </div>
         <audio id="audioPlayer" style="display:none;"></audio>
+        
+        <div id="loadingOverlay" class="loading-overlay">
+            <div>
+                <span id="loadingText"></span>
+                <span id="progressPercentage"></span>
+            </div>
+        </div>
     </main>
 
     <script>
-        // --- عناصر التحكم ---
         const hizbTitle = document.getElementById('hizbTitle');
         const athmanList = document.getElementById('athmanList');
         const searchInput = document.getElementById('searchInput');
@@ -316,10 +342,13 @@
         const timeline = document.getElementById('timeline');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
-        // ===== إضافة متغير للزر الجديد =====
         const downloadHizbBtn = document.getElementById('downloadHizbBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
+        const progressPercentage = document.getElementById('progressPercentage');
         
-        // --- بيانات المشروع ---
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
         const GITHUB_USER = "abuabdalaala";
         const GITHUB_REPO = "quran_nayhy";
         const GITHUB_BRANCH = "main";
@@ -344,13 +373,11 @@
             }
         ];
 
-        // --- متغيرات الحالة ---
         let currentHizbIndex = 0;
         let currentThumnIndex = -1;
         let repeatCounter = 0;
         let isPlaying = false;
 
-        // --- وظائف ---
         function populateAthmanList(filter = '') {
             const hizb = quranData[currentHizbIndex];
             hizbTitle.textContent = hizb.hizb_name;
@@ -364,7 +391,6 @@
                 li.className = 'athman-list-item';
                 li.dataset.index = index;
 
-                // ===== تم حذف زر التحميل الصغير من هنا =====
                 li.innerHTML = `
                     <div class="thumn-info">
                         <span class="thumn-number">${index + 1}</span>
@@ -404,8 +430,6 @@
                 audioPlayer.play().catch(e => console.error("Error playing audio:", e));
             }
         }
-        
-        // ===== تم حذف وظيفة إنشاء الفيديو createVideo بالكامل =====
 
         function updateActiveListItem() {
             const listItems = athmanList.querySelectorAll('.athman-list-item');
@@ -425,32 +449,43 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
         
-        // ===== وظيفة جديدة لتحميل كل الملفات الصوتية =====
-        function downloadAllAudio() {
+        async function downloadAllAudio() {
             const hizb = quranData[currentHizbIndex];
             if (!hizb) {
                 alert("لا يوجد حزب محدد لتحميله.");
                 return;
             }
 
-            alert(`سيتم الآن بدء تحميل ${hizb.athman.length} ملفات صوتية. قد يطلب منك المتصفح السماح بذلك.`);
+            loadingText.textContent = 'التحضير لبدء التحميل...';
+            progressPercentage.textContent = '';
+            loadingOverlay.style.display = 'flex';
 
-            hizb.athman.forEach(thumn => {
+            let counter = 1;
+            for (const thumn of hizb.athman) {
+                loadingText.textContent = `جاري بدء تحميل الملف ${counter} من ${hizb.athman.length}`;
+                
                 const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
                 
-                // إنشاء رابط غير مرئي في الصفحة
                 const a = document.createElement('a');
                 a.href = audioURL;
-                a.download = thumn.audio_file; // اسم الملف عند التحميل
+                a.download = thumn.audio_file;
                 
-                // إضافته للصفحة، الضغط عليه برمجياً، ثم حذفه
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-            });
+                
+                counter++;
+                
+                await sleep(500); 
+            }
+            
+            loadingText.textContent = 'اكتملت كل عمليات التحميل!';
+            progressPercentage.textContent = '✔️';
+            setTimeout(() => {
+                 loadingOverlay.style.display = 'none';
+            }, 2000);
         }
 
-        // --- الأحداث ---
         searchInput.addEventListener('input', (e) => {
             populateAthmanList(e.target.value);
         });
@@ -468,7 +503,6 @@
             }
         });
         
-        // ===== ربط الزر الجديد بالوظيفة الجديدة =====
         downloadHizbBtn.addEventListener('click', downloadAllAudio);
 
         audioPlayer.addEventListener('play', () => { isPlaying = true; playPauseBtn.textContent = '⏸'; });
@@ -515,7 +549,6 @@
             }
         });
 
-        // --- بدء التشغيل ---
         populateAthmanList();
     </script>
 
