@@ -214,24 +214,33 @@
     </main>
 
     <script>
+        // =======================================================
+        //  الجزء الذي تم تصحيحه بناءً على معلوماتك
+        // =======================================================
+
+        const GITHUB_BASE_URL = "https://raw.githubusercontent.com/abuabdalaala/quran_nayhy/main/audio/audio/hizb_01/";
+
         const quranData = [
             {
                 hizb_number: 1,
                 hizb_name: "01-حزب الفاتحة",
                 athman: [
-                    { thumn_name: "001- الحمد لله رب العالمين", audio_file: "001.mp3" },
-                    { thumn_name: "002- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلوا إلى شياطينهم قالوا إنا معكم", audio_file: "002.mp3" },
-                    { thumn_name: "003- إن الله لا يستحيي أن يضرب مثلا ما بعوضة فما فوقها", audio_file: "003.mp3" },
-                    { thumn_name: "004- وإذ قلنا للملائكة اسجدوا لآدم فسجدوا إلا إبليس أبى واستكبر", audio_file: "004.mp3" },
-                    { thumn_name: "005- أتأمرون الناس بالبر وتنسون أنفسكم وأنتم تتلون الكتاب", audio_file: "005.mp3" },
-                    { thumn_name: "006- وإذ قال موسى لقومه يا قوم إنكم ظلمتم أنفسكم", audio_file: "006.mp3" },
-                    { thumn_name: "007- وإذ استسقى موسى لقومه فقلنا اضرب بعصاك الحجر", audio_file: "007.mp3" },
-                    { thumn_name: "008- وإذ قال موسى لقومه إن الله يأمركم أن تذبحوا بقرة", audio_file: "008.mp3" }
+                    { thumn_name: "001- الحمد لله رب العالمين", audio_file: "thumn_001.mp3" },
+                    { thumn_name: "002- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلوا إلى شياطينهم قالوا إنا معكم", audio_file: "thumn_002.mp3" },
+                    { thumn_name: "003- إن الله لا يستحيي أن يضرب مثلا ما بعوضة فما فوقها", audio_file: "thumn_003.mp3" },
+                    { thumn_name: "004- وإذ قلنا للملائكة اسجدوا لآدم فسجدوا إلا إبليس أبى واستكبر", audio_file: "thumn_004.mp3" },
+                    { thumn_name: "005- أتأمرون الناس بالبر وتنسون أنفسكم وأنتم تتلون الكتاب", audio_file: "thumn_005.mp3" },
+                    { thumn_name: "006- وإذ قال موسى لقومه يا قوم إنكم ظلمتم أنفسكم", audio_file: "thumn_006.mp3" },
+                    { thumn_name: "007- وإذ استسقى موسى لقومه فقلنا اضرب بعصاك الحجر", audio_file: "thumn_007.mp3" },
+                    { thumn_name: "008- وإذ قال موسى لقومه إن الله يأمركم أن تذبحوا بقرة", audio_file: "thumn_008.mp3" }
                 ]
             }
         ];
+        
+        // =======================================================
+        // باقي الكود كما هو بدون تغيير
+        // =======================================================
 
-        // --- عناصر التحكم ---
         const hizbTitle = document.getElementById('hizbTitle');
         const athmanList = document.getElementById('athmanList');
         const quranImage = document.getElementById('quranImage');
@@ -246,15 +255,11 @@
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
 
-        // --- متغيرات الحالة ---
         let currentHizbIndex = 0;
         let currentThumnIndex = 0;
         let repeatCounter = 0;
         let isPlaying = false;
 
-        const GITHUB_BASE_URL = "https://raw.githubusercontent.com/abuabdalaala/quran_nayhy/main/audio/hizb_1/";
-
-        // --- وظائف ---
         function populateAthmanList() {
             const hizb = quranData[currentHizbIndex];
             hizbTitle.textContent = hizb.hizb_name;
@@ -277,7 +282,6 @@
 
             audioPlayer.src = GITHUB_BASE_URL + thumn.audio_file;
             
-            // الصورة المؤقتة
             const thumnNumberForImage = currentThumnIndex + 1;
             quranImage.src = `https://via.placeholder.com/800x1200/ffffff/333333?text=صورة+الثمن+رقم+${thumnNumberForImage}`;
             
@@ -308,7 +312,6 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // --- الأحداث ---
         playPauseBtn.addEventListener('click', () => {
             if (audioPlayer.paused) {
                 audioPlayer.play();
@@ -344,7 +347,7 @@
         nextBtn.addEventListener('click', () => {
             currentThumnIndex++;
             if (currentThumnIndex >= quranData[currentHizbIndex].athman.length) {
-                currentThumnIndex = 0; // يعود للأول
+                currentThumnIndex = 0;
             }
             loadThumn(isPlaying);
         });
@@ -352,7 +355,7 @@
         prevBtn.addEventListener('click', () => {
             currentThumnIndex--;
             if (currentThumnIndex < 0) {
-                currentThumnIndex = quranData[currentHizbIndex].athman.length - 1; // يذهب للأخير
+                currentThumnIndex = quranData[currentHizbIndex].athman.length - 1;
             }
             loadThumn(isPlaying);
         });
@@ -371,7 +374,6 @@
             }
         });
 
-        // --- بدء التشغيل ---
         populateAthmanList();
     </script>
 
