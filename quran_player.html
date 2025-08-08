@@ -142,22 +142,25 @@
             height: 100%;
         }
 
+        /* ===== الكود المعدل هنا ===== */
         .image-container {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
-            overflow: auto;
+            padding: 0; /* تم حذف الفراغ */
+            overflow: hidden; /* تم تغييرها */
+            background-color: #000; /* تمت إضافة خلفية سوداء */
         }
-
+        
+        /* ===== والكود المعدل هنا ===== */
         #quranImage {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
+            width: 100%; /* تم التغيير من max-width */
+            height: 100%; /* تم التغيير من max-height */
+            object-fit: contain; /* يبقي على أبعاد الصورة صحيحة */
+            border-radius: 0; /* تم حذف الحواف الدائرية */
+            box-shadow: none; /* تم حذف الظل */
+            border: none; /* تم حذف الحدود */
         }
 
         .player-container {
@@ -371,7 +374,7 @@
             }
         ];
 
-        // --- عناصر التحكم ---\
+        // --- عناصر التحكم ---
         const hizbTitle = document.getElementById('hizbTitle');
         const athmanList = document.getElementById('athmanList');
         const searchInput = document.getElementById('searchInput');
@@ -388,13 +391,13 @@
         const totalTimeEl = document.getElementById('totalTime');
         const loadingOverlay = document.getElementById('loadingOverlay');
 
-        // --- متغيرات الحالة ---\
+        // --- متغيرات الحالة ---
         let currentHizbIndex = 0;
         let currentThumnIndex = -1; // -1 to indicate nothing is selected initially
         let repeatCounter = 0;
         let isPlaying = false;
 
-        // --- وظائف ---\
+        // --- وظائف ---
         function populateAthmanList(filter = '') {
             const hizb = quranData[currentHizbIndex];
             hizbTitle.textContent = hizb.hizb_name;
@@ -455,9 +458,6 @@
             }
         }
         
-        // =======================================================
-        //  الدالة المصححة لإنشاء الفيديو
-        // =======================================================
         async function createVideo(index) {
             loadingOverlay.style.display = 'flex';
             try {
@@ -474,7 +474,6 @@
                 ffmpeg.FS('writeFile', 'image.jpg', await fetchFile(imageURL));
                 ffmpeg.FS('writeFile', 'audio.mp3', await fetchFile(audioURL));
 
-                // الأمر المصحح: تم حذف مدة الفيديو الثابتة ليعتمد على مدة الصوت
                 await ffmpeg.run('-r', '1', '-i', 'image.jpg', '-i', 'audio.mp3', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', 'output.mp4');
 
                 const data = ffmpeg.FS('readFile', 'output.mp4');
@@ -494,7 +493,6 @@
                 loadingOverlay.textContent = 'جاري تحميل وإنشاء الفيديو...';
             }
         }
-        // =======================================================
 
         function updateActiveListItem() {
             const listItems = athmanList.querySelectorAll('.athman-list-item');
@@ -514,7 +512,7 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // --- الأحداث ---\
+        // --- الأحداث ---
         searchInput.addEventListener('input', (e) => {
             populateAthmanList(e.target.value);
         });
@@ -584,7 +582,7 @@
             }
         });
 
-        // --- بدء التشغيل ---\
+        // --- بدء التشغيل ---
         populateAthmanList();
     </script>
 
