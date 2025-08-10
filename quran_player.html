@@ -280,14 +280,14 @@
                 hizb_number: 2,
                 hizb_name: "الحزب 02-وإذا لقوا الذين ءامنوا قالوا ءامنا",
                 athman: [
-                    { thumn_name: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم", audio_file: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم.mp3", image_file: "thumn_009.jpg" },
-                    { thumn_name: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم", audio_file: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم.mp3", image_file: "thumn_010.jpg" },
-                    { thumn_name: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون", audio_file: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون.mp3", image_file: "thumn_011.jpg" },
-                    { thumn_name: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان", audio_file: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان.mp3", image_file: "thumn_012.jpg" },
-                    { thumn_name: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها", audio_file: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها.mp3", image_file: "thumn_013.jpg" },
-                    { thumn_name: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله", audio_file: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله.mp3", image_file: "thumn_014.jpg" },
-                    { thumn_name: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن", audio_file: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن.mp3", image_file: "thumn_015.jpg" },
-                    { thumn_name: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه", audio_file: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه.mp3", image_file: "thumn_016.jpg" }
+                    { thumn_name: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم", audio_file: "009-  وإذا  لقوا  الذين  آمنوا  قالوا  آمنا  وإذا  خلا  بعضهم  إلى  بعض  قالوا  أتحدثونهم.mp3", image_file: "thumn_009.jpg" },
+                    { thumn_name: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم", audio_file: "010-  وإن  يأتوكم  أسارى  تفادوهم  وهو  محرم  عليكم  إخراجهم.mp3", image_file: "thumn_010.jpg" },
+                    { thumn_name: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون", audio_file: "011-  ولقد  جاءكم  موسى  بالبينات  ثم  اتخذتم  العجل  من  بعده  وأنتم  ظالمون.mp3", image_file: "thumn_011.jpg" },
+                    { thumn_name: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان", audio_file: "012-  واتبعوا  ما  تتلوا  الشياطين  على  ملك  سليمان  وما  كفر  سليمان.mp3", image_file: "thumn_012.jpg" },
+                    { thumn_name: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها", audio_file: "013-  ما  ننسخ  من  آية  أو  ننسها  نأت  بخير  منها  أو  مثلها.mp3", image_file: "thumn_013.jpg" },
+                    { thumn_name: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله", audio_file: "014-  ولله  المشرق  والمغرب  فأينما  تولوا  فثم  وجه  الله.mp3", image_file: "thumn_014.jpg" },
+                    { thumn_name: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن", audio_file: "015-  وإذ  ابتلى  إبراهيم  ربه  بكلمات  فأتمهن.mp3", image_file: "thumn_015.jpg" },
+                    { thumn_name: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه", audio_file: "016-  أم  كنتم  شهداء  إذ  حضر  يعقوب  الموت  إذ  قال  لبنيه.mp3", image_file: "thumn_016.jpg" }
                 ]
             }
         ];
@@ -350,7 +350,6 @@
             const thumn = hizb.athman[currentThumnIndex];
 
             const hizbFolder = `hizb_${String(hizb.hizb_number).padStart(2, '0')}`;
-            // --- السطر الذي تم إصلاحه ---
             const audioPath = `audio/audio/${hizbFolder}/${encodeURIComponent(thumn.audio_file)}`;
             const imagePath = `images/${hizbFolder}/${encodeURIComponent(thumn.image_file)}`;
 
@@ -365,7 +364,6 @@
             if (playImmediately) {
                 audioPlayer.play().catch(e => {
                     console.error("خطأ في تشغيل الصوت:", e);
-                    // يمكنك هنا إظهار رسالة للمستخدم تفيد بوجود خطأ
                     currentThumnTitle.textContent = "خطأ: لم يتم العثور على الملف الصوتي";
                 });
             }
@@ -466,15 +464,13 @@
             } else {
                 repeatCounter = currentRepeatCount; // Reset for next time
                 playNext();
-                return; // اخرج من الدالة بعد الانتقال للثمن التالي
+                return; 
             }
             
             if (currentRepeatCount > 1) {
                 repeatCountInput.value = currentRepeatCount - 1;
                 audioPlayer.currentTime = 0;
                 audioPlayer.play();
-            } else {
-                // لا تفعل شيئا هنا، لأن playNext() تم استدعاؤها في الأعلى
             }
         });
 
