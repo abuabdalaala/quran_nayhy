@@ -189,7 +189,7 @@
         <header class="header">
             <div class="header-top-row">
                 <select id="hizbSelector"></select>
-                <button id="downloadHizbBtn">تحميل الحزب (ZIP)</button>
+                <button id="downloadHizbBtn">تحميل الحزب</button>
             </div>
             <div class="search-container">
                 <input type="text" id="searchInput" placeholder="ابحث في جميع الأحزاب...">
@@ -429,7 +429,10 @@
                         if (!response.ok) throw new Error(`Failed to fetch ${thumn.audio_file}`);
                         return response.blob();
                     })
-                    .then(blob => zip.file(thumn.audio_file, blob))
+                    .then(blob => {
+                        const newFilename = `${thumn.title}.mp3`;
+                        zip.file(newFilename, blob);
+                    })
                     .catch(error => console.error(error));
                 promises.push(promise);
             });
