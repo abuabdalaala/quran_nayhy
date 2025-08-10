@@ -7,8 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <style>
         :root {
@@ -20,11 +18,7 @@
             --border-color: #DEE2E6;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
-        * {
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        * { box-sizing: border-box; }
         body {
             font-family: 'Tajawal', sans-serif;
             margin: 0;
@@ -47,10 +41,16 @@
             text-align: center;
             border-bottom: 1px solid var(--border-color);
         }
-        #hizbTitle {
-            font-size: 1.5rem;
-            font-weight: 800;
+        #hizbSelector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
             color: var(--accent-color);
+            background-color: #F8F9FA;
             margin-bottom: 15px;
         }
         .search-container {
@@ -81,9 +81,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .athman-list-item:hover {
-            background-color: #F1F3F5;
-        }
+        .athman-list-item:hover { background-color: #F1F3F5; }
         .athman-list-item.active {
             background-color: var(--accent-color);
             color: var(--secondary-bg);
@@ -143,6 +141,7 @@
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 15px;
+            min-height: 34px;
         }
         .player-controls {
             display: flex;
@@ -152,135 +151,57 @@
             margin-bottom: 15px;
         }
         .player-controls button {
-            background: none;
-            border: none;
-            font-size: 2.2rem;
-            cursor: pointer;
-            color: var(--text-primary);
+            background: none; border: none; font-size: 2.2rem;
+            cursor: pointer; color: var(--text-primary);
             transition: color 0.3s, transform 0.2s;
         }
         .player-controls button:hover {
             color: var(--accent-color);
             transform: scale(1.1);
         }
-        .timeline-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .timeline-container { display: flex; align-items: center; gap: 15px; }
         #timeline {
-            width: 100%;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            background: var(--border-color);
-            border-radius: 3px;
-            outline: none;
-            cursor: pointer;
+            width: 100%; -webkit-appearance: none; appearance: none;
+            height: 6px; background: var(--border-color); border-radius: 3px;
+            outline: none; cursor: pointer;
         }
         #timeline::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            cursor: pointer;
+            -webkit-appearance: none; appearance: none;
+            width: 18px; height: 18px; background: var(--accent-color);
+            border-radius: 50%; cursor: pointer;
         }
         #timeline::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            cursor: pointer;
+            width: 18px; height: 18px; background: var(--accent-color);
+            border-radius: 50%; cursor: pointer;
         }
         .time-display {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            width: 50px;
-            text-align: center;
+            font-size: 0.9rem; color: var(--text-secondary);
+            width: 50px; text-align: center;
         }
         .advanced-controls-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            margin-top: 20px;
+            display: flex; justify-content: center;
+            align-items: center; gap: 40px; margin-top: 20px;
         }
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .control-group label {
-            font-size: 1rem;
-        }
+        .control-group { display: flex; align-items: center; gap: 10px; }
+        .control-group label { font-size: 1rem; }
         .control-group select, .control-group input {
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 8px 12px; border-radius: 8px;
             border: 1px solid var(--border-color);
-            font-family: 'Tajawal', sans-serif;
-            font-size: 0.9rem;
+            font-family: 'Tajawal', sans-serif; font-size: 0.9rem;
         }
-        .control-group input[type="number"] {
-            width: 70px;
-        }
-        .button-primary {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .button-primary:hover {
-            background-color: #2471A3;
-            transform: scale(1.05);
-        }
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(5px);
-            color: var(--text-primary);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 1000;
-        }
-        #loadingText {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        #progressPercentage {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent-color);
-            margin-top: 10px;
-            display: block;
-        }
+        .control-group input[type="number"] { width: 70px; }
     </style>
 </head>
 <body>
 
     <aside class="sidebar">
         <div class="sidebar-header">
-            <h1 id="hizbTitle"></h1>
-            <button id="downloadHizbBtn" class="button-primary">تحميل الحزب كاملاً (ZIP)</button>
+            <select id="hizbSelector"></select>
         </div>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="ابحث عن ثمن...">
         </div>
-        <ul class="athman-list" id="athmanList">
-        </ul>
+        <ul class="athman-list" id="athmanList"></ul>
     </aside>
 
     <main class="main-content">
@@ -290,19 +211,16 @@
         
         <div class="player-container">
             <div id="currentThumnTitle">اختر ثمنًا للبدء</div>
-            
             <div class="timeline-container">
                 <span class="time-display" id="currentTime">0:00</span>
                 <input type="range" id="timeline" value="0" step="1">
                 <span class="time-display" id="totalTime">0:00</span>
             </div>
-
             <div class="player-controls">
                 <button id="prevBtn" title="الثمن السابق">⏮</button>
                 <button id="playPauseBtn" title="تشغيل/إيقاف">⏯</button>
                 <button id="nextBtn" title="الثمن التالي">⏭</button>
             </div>
-            
             <div class="advanced-controls-container">
                  <div class="control-group">
                     <label for="speedControl">السرعة:</label>
@@ -320,17 +238,10 @@
             </div>
         </div>
         <audio id="audioPlayer" style="display:none;"></audio>
-        
-        <div id="loadingOverlay" class="loading-overlay">
-            <div>
-                <span id="loadingText"></span>
-                <span id="progressPercentage"></span>
-            </div>
-        </div>
     </main>
-    
+
     <script>
-        const hizbTitle = document.getElementById('hizbTitle');
+        const hizbSelector = document.getElementById('hizbSelector');
         const athmanList = document.getElementById('athmanList');
         const searchInput = document.getElementById('searchInput');
         const quranImage = document.getElementById('quranImage');
@@ -344,22 +255,16 @@
         const timeline = document.getElementById('timeline');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
-        const downloadHizbBtn = document.getElementById('downloadHizbBtn');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const loadingText = document.getElementById('loadingText');
-        const progressPercentage = document.getElementById('progressPercentage');
         
         const GITHUB_USER = "abuabdalaala";
         const GITHUB_REPO = "quran_nayhy";
         const GITHUB_BRANCH = "main";
-        const AUDIO_BASE_PATH = `audio/audio/hizb_01/`;
-        const IMAGE_BASE_PATH = `images/hizb_01/`;
         const GITHUB_RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/`;
 
         const quranData = [
             {
                 hizb_number: 1,
-                hizb_name: "01-حزب الفاتحة",
+                hizb_name: "الحزب 01-الفاتحة",
                 athman: [
                     { thumn_name: "001- الحمد لله رب العالمين", audio_file: "thumn_001.mp3", image_file: "thumn_001.jpg" },
                     { thumn_name: "002- وإذا لقوا الذين آمنوا قالوا آمنا...", audio_file: "thumn_002.mp3", image_file: "thumn_002.jpg" },
@@ -370,6 +275,20 @@
                     { thumn_name: "007- وإذ استسقى موسى لقومه فقلنا...", audio_file: "thumn_007.mp3", image_file: "thumn_007.jpg" },
                     { thumn_name: "008- وإذ قال موسى لقومه إن الله يأمركم...", audio_file: "thumn_008.mp3", image_file: "thumn_008.jpg" }
                 ]
+            },
+            {
+                hizb_number: 2,
+                hizb_name: "الحزب 02-وإذا لقوا الذين ءامنوا قالوا ءامنا",
+                athman: [
+                    { thumn_name: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم", audio_file: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم.mp3", image_file: "thumn_009.jpg" },
+                    { thumn_name: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم", audio_file: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم.mp3", image_file: "thumn_010.jpg" },
+                    { thumn_name: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون", audio_file: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون.mp3", image_file: "thumn_011.jpg" },
+                    { thumn_name: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان", audio_file: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان.mp3", image_file: "thumn_012.jpg" },
+                    { thumn_name: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها", audio_file: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها.mp3", image_file: "thumn_013.jpg" },
+                    { thumn_name: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله", audio_file: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله.mp3", image_file: "thumn_014.jpg" },
+                    { thumn_name: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن", audio_file: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن.mp3", image_file: "thumn_015.jpg" },
+                    { thumn_name: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه", audio_file: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه.mp3", image_file: "thumn_016.jpg" }
+                ]
             }
         ];
 
@@ -378,29 +297,41 @@
         let repeatCounter = 0;
         let isPlaying = false;
 
+        function populateHizbSelector() {
+            hizbSelector.innerHTML = '';
+            quranData.forEach((hizb, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = hizb.hizb_name;
+                if (index === currentHizbIndex) {
+                    option.selected = true;
+                }
+                hizbSelector.appendChild(option);
+            });
+        }
+
         function populateAthmanList(filter = '') {
             const hizb = quranData[currentHizbIndex];
-            hizbTitle.textContent = hizb.hizb_name;
             athmanList.innerHTML = '';
             
             const filteredAthman = hizb.athman.filter(thumn => thumn.thumn_name.includes(filter));
 
             filteredAthman.forEach((thumn) => {
-                const index = hizb.athman.indexOf(thumn);
+                const originalIndex = hizb.athman.indexOf(thumn);
                 const li = document.createElement('li');
                 li.className = 'athman-list-item';
-                li.dataset.index = index;
+                li.dataset.index = originalIndex;
 
                 li.innerHTML = `
                     <div class="thumn-info">
-                        <span class="thumn-number">${index + 1}</span>
-                        <span class="thumn-name">${thumn.thumn_name}</span>
+                        <span class="thumn-number">${thumn.thumn_name.substring(0, 3)}</span>
+                        <span class="thumn-name">${thumn.thumn_name.substring(5)}</span>
                     </div>
                 `;
 
-                li.querySelector('.thumn-info').addEventListener('click', () => {
-                    if(currentThumnIndex !== index) {
-                        currentThumnIndex = index;
+                li.addEventListener('click', () => {
+                    if(currentThumnIndex !== originalIndex) {
+                        currentThumnIndex = originalIndex;
                         loadThumn(true);
                     } else {
                        playPauseBtn.click();
@@ -413,13 +344,17 @@
         }
 
         function loadThumn(playImmediately = false) {
-            if(currentThumnIndex < 0) return;
+            if (currentThumnIndex < 0 || currentHizbIndex < 0) return;
             
             const hizb = quranData[currentHizbIndex];
             const thumn = hizb.athman[currentThumnIndex];
 
-            audioPlayer.src = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
-            quranImage.src = GITHUB_RAW_BASE_URL + IMAGE_BASE_PATH + thumn.image_file;
+            const hizbFolder = `hizb_${String(hizb.hizb_number).padStart(2, '0')}`;
+            const audioPath = `audio/audio/${hizbFolder}/${encodeURIComponent(thumn.audio_file)}`;
+            const imagePath = `images/${hizbFolder}/${thumn.image_file}`;
+
+            audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
+            quranImage.src = GITHUB_RAW_BASE_URL + imagePath;
             quranImage.alt = `صورة مصحف: ${thumn.thumn_name}`;
             
             currentThumnTitle.textContent = thumn.thumn_name;
@@ -430,7 +365,7 @@
                 audioPlayer.play().catch(e => console.error("Error playing audio:", e));
             }
         }
-
+        
         function updateActiveListItem() {
             const listItems = athmanList.querySelectorAll('.athman-list-item');
             listItems.forEach((item) => {
@@ -448,78 +383,24 @@
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
+
+        // --- Event Listeners ---
+        hizbSelector.addEventListener('change', (e) => {
+            currentHizbIndex = parseInt(e.target.value);
+            currentThumnIndex = -1; // Reset selection
+            audioPlayer.pause();
+            audioPlayer.src = '';
+            quranImage.src = 'https://via.placeholder.com/1200x1800/FFFFFF/2E86C1?text=اختر+ثمنا';
+            currentThumnTitle.textContent = 'اختر ثمنًا للبدء';
+            populateAthmanList();
+        });
         
-        async function downloadAllAudioAsZip() {
-            const hizb = quranData[currentHizbIndex];
-            if (!hizb) {
-                alert("لا يوجد حزب محدد لتحميله.");
-                return;
-            }
-
-            loadingText.textContent = 'جاري تهيئة العملية...';
-            progressPercentage.textContent = '';
-            loadingOverlay.style.display = 'flex';
-
-            try {
-                const zip = new JSZip();
-                let counter = 1;
-
-                for (const thumn of hizb.athman) {
-                    // إنشاء اسم ملف نظيف وواضح
-                    const cleanName = thumn.thumn_name.replace(/\.{3,}/g, '').trim(); 
-                    const finalFilename = `${cleanName}.mp3`;
-
-                    loadingText.textContent = `جاري تحميل الملف ${counter} من ${hizb.athman.length}...`;
-                    progressPercentage.textContent = finalFilename; 
-
-                    const audioURL = GITHUB_RAW_BASE_URL + AUDIO_BASE_PATH + thumn.audio_file;
-                    const response = await fetch(audioURL);
-                    
-                    if (!response.ok) {
-                        throw new Error(`فشل تحميل الملف: ${thumn.audio_file}`);
-                    }
-                    
-                    const audioBlob = await response.blob();
-                    zip.file(finalFilename, audioBlob); 
-                    counter++;
-                }
-
-                loadingText.textContent = 'جاري ضغط الملفات...';
-                
-                const zipBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
-                    if (metadata.percent) {
-                         progressPercentage.textContent = `${Math.round(metadata.percent)}%`;
-                    }
-                });
-
-                loadingText.textContent = 'اكتمل! جاري تجهيز التحميل...';
-                progressPercentage.textContent = '✔️';
-
-                const url = URL.createObjectURL(zipBlob);
-                const a = document.createElement('a');
-a.href = url;
-                a.download = `${hizb.hizb_name}.zip`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-
-            } catch (error) {
-                console.error("Error creating ZIP file:", error);
-                alert("حدث خطأ فادح أثناء إنشاء ملف الـ ZIP. يرجى التحقق من الكونسول للمزيد من التفاصيل.");
-            } finally {
-                setTimeout(() => {
-                     loadingOverlay.style.display = 'none';
-                }, 2000);
-            }
-        }
-
-        // --- الأحداث ---
         searchInput.addEventListener('input', (e) => {
             populateAthmanList(e.target.value);
         });
+
         playPauseBtn.addEventListener('click', () => {
-            if(currentThumnIndex < 0) {
+            if (currentThumnIndex < 0) {
                 currentThumnIndex = 0;
                 loadThumn(true);
                 return;
@@ -531,8 +412,6 @@ a.href = url;
             }
         });
         
-        downloadHizbBtn.addEventListener('click', downloadAllAudioAsZip);
-
         audioPlayer.addEventListener('play', () => { isPlaying = true; playPauseBtn.textContent = '⏸'; });
         audioPlayer.addEventListener('pause', () => { isPlaying = false; playPauseBtn.textContent = '⏯'; });
         audioPlayer.addEventListener('loadedmetadata', () => {
@@ -540,36 +419,51 @@ a.href = url;
             timeline.max = audioPlayer.duration;
         });
         audioPlayer.addEventListener('timeupdate', () => {
-            currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
-            timeline.value = audioPlayer.currentTime;
+            if (audioPlayer.duration) {
+                currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+                timeline.value = audioPlayer.currentTime;
+            }
         });
         timeline.addEventListener('input', () => {
             audioPlayer.currentTime = timeline.value;
         });
+
         function playNext() {
+            const hizb = quranData[currentHizbIndex];
             currentThumnIndex++;
-            if (currentThumnIndex >= quranData[currentHizbIndex].athman.length) {
-                currentThumnIndex = 0;
+            if (currentThumnIndex >= hizb.athman.length) {
+                currentThumnIndex = 0; 
             }
             loadThumn(isPlaying);
         }
+
         function playPrev() {
+            const hizb = quranData[currentHizbIndex];
              currentThumnIndex--;
             if (currentThumnIndex < 0) {
-                currentThumnIndex = quranData[currentHizbIndex].athman.length - 1;
+                currentThumnIndex = hizb.athman.length - 1;
             }
             loadThumn(isPlaying);
         }
+
         nextBtn.addEventListener('click', playNext);
         prevBtn.addEventListener('click', playPrev);
+
         speedControl.addEventListener('change', () => {
             audioPlayer.playbackRate = parseFloat(speedControl.value);
         });
+
         audioPlayer.addEventListener('ended', () => {
-            repeatCounter = parseInt(repeatCountInput.value);
-            repeatCounter--;
-            if (repeatCounter > 0) {
-                repeatCountInput.value = repeatCounter;
+            let currentRepeatCount = parseInt(repeatCountInput.value);
+            if(repeatCounter > 1){
+                repeatCounter--;
+            } else {
+                repeatCounter = currentRepeatCount; // Reset for next time
+                playNext();
+            }
+            
+            if (currentRepeatCount > 1) {
+                repeatCountInput.value = currentRepeatCount - 1;
                 audioPlayer.currentTime = 0;
                 audioPlayer.play();
             } else {
@@ -577,8 +471,10 @@ a.href = url;
             }
         });
 
-        // --- بدء التشغيل ---
+        // --- Initial Load ---
+        populateHizbSelector();
         populateAthmanList();
+
     </script>
 
 </body>
