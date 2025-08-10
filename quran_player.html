@@ -350,8 +350,9 @@
             const thumn = hizb.athman[currentThumnIndex];
 
             const hizbFolder = `hizb_${String(hizb.hizb_number).padStart(2, '0')}`;
+            // --- السطر الذي تم إصلاحه ---
             const audioPath = `audio/audio/${hizbFolder}/${encodeURIComponent(thumn.audio_file)}`;
-            const imagePath = `images/${hizbFolder}/${thumn.image_file}`;
+            const imagePath = `images/${hizbFolder}/${encodeURIComponent(thumn.image_file)}`;
 
             audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
             quranImage.src = GITHUB_RAW_BASE_URL + imagePath;
@@ -362,7 +363,11 @@
             updateActiveListItem();
 
             if (playImmediately) {
-                audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+                audioPlayer.play().catch(e => {
+                    console.error("خطأ في تشغيل الصوت:", e);
+                    // يمكنك هنا إظهار رسالة للمستخدم تفيد بوجود خطأ
+                    currentThumnTitle.textContent = "خطأ: لم يتم العثور على الملف الصوتي";
+                });
             }
         }
         
@@ -455,11 +460,13 @@
 
         audioPlayer.addEventListener('ended', () => {
             let currentRepeatCount = parseInt(repeatCountInput.value);
+            
             if(repeatCounter > 1){
                 repeatCounter--;
             } else {
                 repeatCounter = currentRepeatCount; // Reset for next time
                 playNext();
+                return; // اخرج من الدالة بعد الانتقال للثمن التالي
             }
             
             if (currentRepeatCount > 1) {
@@ -467,7 +474,7 @@
                 audioPlayer.currentTime = 0;
                 audioPlayer.play();
             } else {
-                playNext();
+                // لا تفعل شيئا هنا، لأن playNext() تم استدعاؤها في الأعلى
             }
         });
 
