@@ -29,7 +29,7 @@
             overflow: hidden;
         }
         .sidebar {
-            width: 400px;
+            width: 420px;
             background-color: var(--secondary-bg);
             border-left: 1px solid var(--border-color);
             display: flex;
@@ -41,6 +41,17 @@
             text-align: center;
             border-bottom: 1px solid var(--border-color);
         }
+        .search-container {
+            padding-bottom: 20px;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+        }
         #hizbSelector {
             width: 100%;
             padding: 12px;
@@ -51,19 +62,6 @@
             font-weight: 700;
             color: var(--accent-color);
             background-color: #F8F9FA;
-            margin-bottom: 15px;
-        }
-        .search-container {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        #searchInput {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            font-family: 'Tajawal', sans-serif;
-            font-size: 1rem;
         }
         .athman-list {
             list-style: none;
@@ -87,24 +85,23 @@
             color: var(--secondary-bg);
         }
         .athman-list-item.active .thumn-name,
-        .athman-list-item.active .thumn-number {
-             color: var(--secondary-bg);
+        .athman-list-item.active .thumn-number,
+        .athman-list-item.active .thumn-hizb-name {
+             color: var(--secondary-bg) !important;
         }
         .thumn-info {
             display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .thumn-number {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            width: 30px;
-            text-align: center;
+            flex-direction: column;
+            gap: 5px;
         }
         .thumn-name {
             font-size: 0.95rem;
             line-height: 1.6;
+        }
+        .thumn-hizb-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 700;
         }
         .main-content {
             flex-grow: 1;
@@ -196,10 +193,10 @@
 
     <aside class="sidebar">
         <div class="sidebar-header">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="ابحث في جميع الأحزاب...">
+            </div>
             <select id="hizbSelector"></select>
-        </div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="ابحث عن ثمن...">
         </div>
         <ul class="athman-list" id="athmanList"></ul>
     </aside>
@@ -264,38 +261,38 @@
         const quranData = [
             {
                 hizb_number: 1,
-                hizb_name: "الحزب 01-الفاتحة",
+                hizb_name: "الحزب 01- الفاتحة",
                 athman: [
-                    { thumn_name: "001- الحمد لله رب العالمين", audio_file: "thumn_001.mp3", image_file: "thumn_001.jpg" },
-                    { thumn_name: "002- وإذا لقوا الذين آمنوا قالوا آمنا...", audio_file: "thumn_002.mp3", image_file: "thumn_002.jpg" },
-                    { thumn_name: "003- إن الله لا يستحيي أن يضرب مثلا...", audio_file: "thumn_003.mp3", image_file: "thumn_003.jpg" },
-                    { thumn_name: "004- وإذ قلنا للملائكة اسجدوا لآدم...", audio_file: "thumn_004.mp3", image_file: "thumn_004.jpg" },
-                    { thumn_name: "005- أتأمرون الناس بالبر وتنسون أنفسكم...", audio_file: "thumn_005.mp3", image_file: "thumn_005.jpg" },
-                    { thumn_name: "006- وإذ قال موسى لقومه يا قوم...", audio_file: "thumn_006.mp3", image_file: "thumn_006.jpg" },
-                    { thumn_name: "007- وإذ استسقى موسى لقومه فقلنا...", audio_file: "thumn_007.mp3", image_file: "thumn_007.jpg" },
-                    { thumn_name: "008- وإذ قال موسى لقومه إن الله يأمركم...", audio_file: "thumn_008.mp3", image_file: "thumn_008.jpg" }
+                    { title: "001- الحمد لله رب العالمين", audio_file: "thumn_001.mp3", image_file: "thumn_001.jpg" },
+                    { title: "002- وإذا لقوا الذين آمنوا قالوا آمنا...", audio_file: "thumn_002.mp3", image_file: "thumn_002.jpg" },
+                    { title: "003- إن الله لا يستحيي أن يضرب مثلا...", audio_file: "thumn_003.mp3", image_file: "thumn_003.jpg" },
+                    { title: "004- وإذ قلنا للملائكة اسجدوا لآدم...", audio_file: "thumn_004.mp3", image_file: "thumn_004.jpg" },
+                    { title: "005- أتأمرون الناس بالبر وتنسون أنفسكم...", audio_file: "thumn_005.mp3", image_file: "thumn_005.jpg" },
+                    { title: "006- وإذ قال موسى لقومه يا قوم...", audio_file: "thumn_006.mp3", image_file: "thumn_006.jpg" },
+                    { title: "007- وإذ استسقى موسى لقومه فقلنا...", audio_file: "thumn_007.mp3", image_file: "thumn_007.jpg" },
+                    { title: "008- وإذ قال موسى لقومه إن الله يأمركم...", audio_file: "thumn_008.mp3", image_file: "thumn_008.jpg" }
                 ]
             },
             {
                 hizb_number: 2,
-                hizb_name: "الحزب 02-وإذا لقوا الذين ءامنوا قالوا ءامنا",
+                hizb_name: "الحزب 02- وإذا لقوا الذين ءامنوا",
                 athman: [
-                    { thumn_name: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم", audio_file: "009-  وإذا  لقوا  الذين  آمنوا  قالوا  آمنا  وإذا  خلا  بعضهم  إلى  بعض  قالوا  أتحدثونهم.mp3", image_file: "thumn_009.jpg" },
-                    { thumn_name: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم", audio_file: "010-  وإن  يأتوكم  أسارى  تفادوهم  وهو  محرم  عليكم  إخراجهم.mp3", image_file: "thumn_010.jpg" },
-                    { thumn_name: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون", audio_file: "011-  ولقد  جاءكم  موسى  بالبينات  ثم  اتخذتم  العجل  من  بعده  وأنتم  ظالمون.mp3", image_file: "thumn_011.jpg" },
-                    { thumn_name: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان", audio_file: "012-  واتبعوا  ما  تتلوا  الشياطين  على  ملك  سليمان  وما  كفر  سليمان.mp3", image_file: "thumn_012.jpg" },
-                    { thumn_name: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها", audio_file: "013-  ما  ننسخ  من  آية  أو  ننسها  نأت  بخير  منها  أو  مثلها.mp3", image_file: "thumn_013.jpg" },
-                    { thumn_name: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله", audio_file: "014-  ولله  المشرق  والمغرب  فأينما  تولوا  فثم  وجه  الله.mp3", image_file: "thumn_014.jpg" },
-                    { thumn_name: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن", audio_file: "015-  وإذ  ابتلى  إبراهيم  ربه  بكلمات  فأتمهن.mp3", image_file: "thumn_015.jpg" },
-                    { thumn_name: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه", audio_file: "016-  أم  كنتم  شهداء  إذ  حضر  يعقوب  الموت  إذ  قال  لبنيه.mp3", image_file: "thumn_016.jpg" }
+                    { title: "009- وإذا لقوا الذين آمنوا قالوا آمنا وإذا خلا بعضهم إلى بعض قالوا أتحدثونهم", audio_file: "thumn_009.mp3", image_file: "thumn_009.jpg" },
+                    { title: "010- وإن يأتوكم أسارى تفادوهم وهو محرم عليكم إخراجهم", audio_file: "thumn_010.mp3", image_file: "thumn_010.jpg" },
+                    { title: "011- ولقد جاءكم موسى بالبينات ثم اتخذتم العجل من بعده وأنتم ظالمون", audio_file: "thumn_011.mp3", image_file: "thumn_011.jpg" },
+                    { title: "012- واتبعوا ما تتلوا الشياطين على ملك سليمان وما كفر سليمان", audio_file: "thumn_012.mp3", image_file: "thumn_012.jpg" },
+                    { title: "013- ما ننسخ من آية أو ننسها نأت بخير منها أو مثلها", audio_file: "thumn_013.mp3", image_file: "thumn_013.jpg" },
+                    { title: "014- ولله المشرق والمغرب فأينما تولوا فثم وجه الله", audio_file: "thumn_014.mp3", image_file: "thumn_014.jpg" },
+                    { title: "015- وإذ ابتلى إبراهيم ربه بكلمات فأتمهن", audio_file: "thumn_015.mp3", image_file: "thumn_015.jpg" },
+                    { title: "016- أم كنتم شهداء إذ حضر يعقوب الموت إذ قال لبنيه", audio_file: "thumn_016.mp3", image_file: "thumn_016.jpg" }
                 ]
             }
         ];
 
         let currentHizbIndex = 0;
         let currentThumnIndex = -1;
-        let repeatCounter = 0;
         let isPlaying = false;
+        let searchMode = false;
 
         function populateHizbSelector() {
             hizbSelector.innerHTML = '';
@@ -303,44 +300,68 @@
                 const option = document.createElement('option');
                 option.value = index;
                 option.textContent = hizb.hizb_name;
-                if (index === currentHizbIndex) {
-                    option.selected = true;
-                }
                 hizbSelector.appendChild(option);
             });
+             hizbSelector.value = currentHizbIndex;
         }
 
-        function populateAthmanList(filter = '') {
-            const hizb = quranData[currentHizbIndex];
+        function renderList(items) {
             athmanList.innerHTML = '';
-            
-            const filteredAthman = hizb.athman.filter(thumn => thumn.thumn_name.includes(filter));
-
-            filteredAthman.forEach((thumn) => {
-                const originalIndex = hizb.athman.indexOf(thumn);
+            items.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'athman-list-item';
-                li.dataset.index = originalIndex;
+                li.dataset.hizbIndex = item.hizbIndex;
+                li.dataset.thumnIndex = item.thumnIndex;
 
-                li.innerHTML = `
-                    <div class="thumn-info">
-                        <span class="thumn-number">${thumn.thumn_name.substring(0, 3)}</span>
-                        <span class="thumn-name">${thumn.thumn_name.substring(5)}</span>
-                    </div>
-                `;
+                let nameHtml = searchMode ? `<div class="thumn-hizb-name">${item.hizbName}</div>` : '';
+                nameHtml += `<div class="thumn-name">${item.thumn.title}</div>`;
+
+                li.innerHTML = `<div class="thumn-info">${nameHtml}</div>`;
 
                 li.addEventListener('click', () => {
-                    if(currentThumnIndex !== originalIndex) {
-                        currentThumnIndex = originalIndex;
-                        loadThumn(true);
-                    } else {
-                       playPauseBtn.click();
-                    }
+                    currentHizbIndex = item.hizbIndex;
+                    currentThumnIndex = item.thumnIndex;
+                    populateHizbSelector();
+                    loadThumn(true);
                 });
-                
                 athmanList.appendChild(li);
             });
             updateActiveListItem();
+        }
+
+
+        function populateAthmanList() {
+            searchMode = false;
+            const hizb = quranData[currentHizbIndex];
+            const items = hizb.athman.map((thumn, index) => ({
+                thumn: thumn,
+                hizbIndex: currentHizbIndex,
+                thumnIndex: index
+            }));
+            renderList(items);
+        }
+        
+        function handleSearch(query) {
+             if (!query) {
+                searchMode = false;
+                populateAthmanList();
+                return;
+            }
+            searchMode = true;
+            let allAthman = [];
+            quranData.forEach((hizb, hizbIndex) => {
+                hizb.athman.forEach((thumn, thumnIndex) => {
+                    if (thumn.title.includes(query)) {
+                        allAthman.push({
+                            thumn: thumn,
+                            hizbIndex: hizbIndex,
+                            thumnIndex: thumnIndex,
+                            hizbName: hizb.hizb_name
+                        });
+                    }
+                });
+            });
+            renderList(allAthman);
         }
 
         function loadThumn(playImmediately = false) {
@@ -355,10 +376,9 @@
 
             audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
             quranImage.src = GITHUB_RAW_BASE_URL + imagePath;
-            quranImage.alt = `صورة مصحف: ${thumn.thumn_name}`;
+            quranImage.alt = `صورة مصحف: ${thumn.title}`;
             
-            currentThumnTitle.textContent = thumn.thumn_name;
-            repeatCounter = parseInt(repeatCountInput.value);
+            currentThumnTitle.textContent = thumn.title;
             updateActiveListItem();
 
             if (playImmediately) {
@@ -372,7 +392,9 @@
         function updateActiveListItem() {
             const listItems = athmanList.querySelectorAll('.athman-list-item');
             listItems.forEach((item) => {
-                if (parseInt(item.dataset.index) === currentThumnIndex) {
+                const hizbIdx = parseInt(item.dataset.hizbIndex);
+                const thumnIdx = parseInt(item.dataset.thumnIndex);
+                if (hizbIdx === currentHizbIndex && thumnIdx === currentThumnIndex) {
                     item.classList.add('active');
                     item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 } else {
@@ -390,20 +412,19 @@
         // --- Event Listeners ---
         hizbSelector.addEventListener('change', (e) => {
             currentHizbIndex = parseInt(e.target.value);
-            currentThumnIndex = -1; // Reset selection
-            audioPlayer.pause();
-            audioPlayer.src = '';
-            quranImage.src = 'https://via.placeholder.com/1200x1800/FFFFFF/2E86C1?text=اختر+ثمنا';
-            currentThumnTitle.textContent = 'اختر ثمنًا للبدء';
+            currentThumnIndex = -1; 
+            searchInput.value = '';
+            searchMode = false;
             populateAthmanList();
         });
         
         searchInput.addEventListener('input', (e) => {
-            populateAthmanList(e.target.value);
+            handleSearch(e.target.value);
         });
 
         playPauseBtn.addEventListener('click', () => {
             if (currentThumnIndex < 0) {
+                currentHizbIndex = parseInt(hizbSelector.value);
                 currentThumnIndex = 0;
                 loadThumn(true);
                 return;
@@ -457,20 +478,13 @@
         });
 
         audioPlayer.addEventListener('ended', () => {
-            let currentRepeatCount = parseInt(repeatCountInput.value);
-            
-            if(repeatCounter > 1){
-                repeatCounter--;
-            } else {
-                repeatCounter = currentRepeatCount; // Reset for next time
-                playNext();
-                return; 
-            }
-            
-            if (currentRepeatCount > 1) {
-                repeatCountInput.value = currentRepeatCount - 1;
+            let repeatCount = parseInt(repeatCountInput.value, 10);
+            if (repeatCount > 1) {
+                repeatCountInput.value = repeatCount - 1;
                 audioPlayer.currentTime = 0;
                 audioPlayer.play();
+            } else {
+                playNext();
             }
         });
 
