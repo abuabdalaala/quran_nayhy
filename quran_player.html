@@ -21,171 +21,143 @@
             --border-color: #DEE2E6;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
-        * {
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
         }
         body {
             font-family: 'Tajawal', sans-serif;
-            margin: 0;
             background-color: var(--primary-bg);
             color: var(--text-primary);
             display: flex;
-            height: 100vh;
-            overflow: hidden;
+            flex-direction: column;
         }
-        .sidebar {
-            width: 450px;
-            min-width: 350px;
+        .top-section {
             background-color: var(--secondary-bg);
-            border-left: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        .header {
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            transition: width 0.3s;
-            resize: horizontal;
-            overflow: auto;
+            gap: 15px;
         }
-        .sidebar-header {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            background: var(--secondary-bg);
-            z-index: 10;
-        }
-        .header-controls {
+        .header-top-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
             align-items: center;
+            gap: 15px;
+            width: 100%;
         }
         #hizbSelector {
             flex-grow: 1;
-            padding: 10px;
+            padding: 10px 15px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             font-size: 1rem;
             font-weight: 700;
         }
-        .button-secondary {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-family: 'Tajawal', sans-serif;
+        .button-primary {
+            flex-shrink: 0;
+            padding: 11px 20px;
             font-size: 0.9rem;
             font-weight: 700;
+            color: white;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            text-align: center;
         }
-        .button-primary {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-family: 'Tajawal', sans-serif;
+         .button-secondary {
+            flex-shrink: 0;
+            padding: 11px 20px;
             font-size: 0.9rem;
             font-weight: 700;
+            color: white;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            text-decoration: none;
+        }
+        .search-container {
+            width: 100%;
         }
         #searchInput {
             width: 100%;
-            padding: 12px;
+            padding: 11px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            font-size: 1rem;
+            font-size: 0.9rem;
+        }
+        .athman-list-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px 0;
+            border-top: 1px solid var(--border-color);
         }
         .athman-list {
             list-style: none;
-            padding: 0;
+            padding: 0 10px;
             margin: 0;
-            overflow-y: auto;
-            flex-grow: 1;
+            display: inline-flex;
+            gap: 10px;
         }
         .athman-list-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .athman-list-item:hover {
-            background-color: #F1F3F5;
+            font-size: 0.9rem;
+            min-width: 50px;
+            text-align: center;
         }
         .athman-list-item.active {
             background-color: var(--accent-color);
             color: var(--secondary-bg);
-            position: sticky;
-            top: 145px; /* Adjust based on header height */
-            bottom: 0;
-        }
-        .athman-list-item.active .thumn-title,
-        .athman-list-item.active .thumn-number {
-             color: var(--secondary-bg);
-        }
-        .thumn-number {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            padding-top: 2px;
-        }
-        .thumn-title {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            flex-grow: 1;
+            border-color: var(--accent-color);
+            font-weight: bold;
         }
         .main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .image-container {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow: hidden;
+            overflow-y: auto; 
         }
         #quranImage {
+            width: auto;
+            height: 100%;
             max-width: 100%;
-            max-height: 100%;
             object-fit: contain;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
         }
         .player-container {
             background-color: var(--secondary-bg);
-            padding: 15px 20px;
             border-top: 1px solid var(--border-color);
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-            z-index: 10;
+            padding: 15px 20px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         #currentThumnTitle {
             text-align: center;
             font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 15px;
-            padding: 0 10px;
         }
         .timeline-container { display: flex; align-items: center; gap: 15px; }
-        .time-display { font-size: 0.9rem; }
-        #timeline { width: 100%; cursor: pointer; }
-
+        .time-display { font-size: 0.85rem; }
         .all-controls-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 5px;
         }
         .advanced-controls-container-left {
             grid-column: 1 / 2;
@@ -194,7 +166,7 @@
             gap: 20px;
         }
         .advanced-controls-container-right {
-            grid-column: 3 / 4;
+             grid-column: 3 / 4;
             justify-self: end;
             display: flex;
             gap: 20px;
@@ -221,7 +193,7 @@
         .loading-overlay {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(5px);
             display: none;
             justify-content: center; align-items: center;
@@ -231,62 +203,62 @@
     </style>
 </head>
 <body>
+    <div id="loadingOverlay" class="loading-overlay"></div>
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="header-controls">
+    <div class="top-section">
+        <header class="header">
+            <div class="header-top-row">
+                <select id="hizbSelector"></select>
                 <a href="التنزيلات.html" class="button-secondary">التنزيلات</a>
                 <button id="downloadHizbBtn" class="button-primary">تحميل الحزب</button>
             </div>
-            <select id="hizbSelector"></select>
-            <input type="text" id="searchInput" placeholder="ابحث في جميع الأثمان..." style="margin-top: 10px;">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="ابحث في جميع الأحزاب...">
+            </div>
+        </header>
+        <div class="athman-list-container">
+            <ul class="athman-list" id="athmanList"></ul>
         </div>
-        <ul class="athman-list" id="athmanList">
-        </ul>
-    </aside>
+    </div>
 
     <main class="main-content">
-        <div class="image-container">
-            <img id="quranImage" src="https://via.placeholder.com/1200x1800/FFFFFF/2E86C1?text=موقع+القرآن+الكريم" alt="صفحة المصحف">
-        </div>
-        
-        <div class="player-container">
-            <div id="currentThumnTitle">اختر ثمنًا للبدء</div>
-            
-            <div class="timeline-container">
-                <span class="time-display" id="currentTime">0:00</span>
-                <input type="range" id="timeline" value="0" step="1">
-                <span class="time-display" id="totalTime">0:00</span>
-            </div>
-
-            <div class="all-controls-grid">
-                <div class="advanced-controls-container-left">
-                    <div class="control-group">
-                        <label for="speedControl">السرعة:</label>
-                        <select id="speedControl">
-                            <option value="0.75">0.75x</option>
-                            <option value="1" selected>عادية</option>
-                            <option value="1.25">1.25x</option>
-                            <option value="1.5">1.5x</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="player-controls">
-                    <button id="prevBtn" title="الثمن السابق">⏮</button>
-                    <button id="playPauseBtn" title="تشغيل/إيقاف">⏯</button>
-                    <button id="nextBtn" title="الثمن التالي">⏭</button>
-                </div>
-                 <div class="advanced-controls-container-right">
-                     <div class="control-group">
-                        <label for="repeatCount">التكرار:</label>
-                        <input type="number" id="repeatCount" min="1" value="1">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <audio id="audioPlayer" style="display:none;"></audio>
-        <div id="loadingOverlay" class="loading-overlay"></div>
+        <img id="quranImage" src="https://raw.githubusercontent.com/abuabdalaala/quran_nayhy/main/images/cover.jpg" alt="مصحف القارئ وليد النايحي">
     </main>
+
+    <footer class="player-container">
+        <div id="currentThumnTitle">اختر ثمنًا للبدء</div>
+        <div class="timeline-container">
+            <span class="time-display" id="currentTime">0:00</span>
+            <input type="range" id="timeline" value="0" step="1" style="width: 100%;">
+            <span class="time-display" id="totalTime">0:00</span>
+        </div>
+        <div class="all-controls-grid">
+            <div class="advanced-controls-container-left">
+                <div class="control-group">
+                    <label for="speedControl">السرعة:</label>
+                    <select id="speedControl">
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>عادية</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                    </select>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button id="prevBtn" title="الثمن السابق">⏮</button>
+                <button id="playPauseBtn" title="تشغيل/إيقاف">⏯</button>
+                <button id="nextBtn" title="الثمن التالي">⏭</button>
+            </div>
+             <div class="advanced-controls-container-right">
+                 <div class="control-group">
+                    <label for="repeatCount">التكرار:</label>
+                    <input type="number" id="repeatCount" min="1" value="1">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <audio id="audioPlayer" style="display:none;"></audio>
 
     <script>
         // DOM Elements
@@ -364,13 +336,14 @@
             "لا أقسم بيوم القيامة", "هل أتى على الإنسان حين من الدهر", "ويطوف عليهم ولدان مخلدون", "ألم نهلك الأولين", "عم يتساءلون", "والنازعات غرقا", "يسألونك عن الساعة أيان مرساها", "فإذا جاءت الصاخة", "فلا أقسم بالخنس", "كلا إن كتاب الفجار لفي سجين",
             "فلا أقسم بالشفق", "إن بطش ربك لشديد", "سبح اسم ربك الأعلى", "أفلا ينظرون إلى الإبل كيف خلقت", "لا أقسم بهذا البلد", "والليل إذا يغشى", "ألم نشرح لك صدرك", "إنا أنزلناه في ليلة القدر", "أفلا يعلم إذا بعثر ما في القبور", "ألم تر كيف فعل ربك بأصحاب الفيل"
         ];
+        
         const quranData = [];
         for (let i = 0; i < 60; i++) {
             const hizbAthman = [];
             for (let j = 0; j < 8; j++) {
                 const thumnIndex = i * 8 + j;
                 hizbAthman.push({
-                    title: thumnTitles[thumnIndex],
+                    title: thumnTitles[thumnIndex] || `الثمن ${thumnIndex + 1}`,
                     audio_file: `thumn_${String(thumnIndex + 1).padStart(3, '0')}.mp3`,
                     image_file: `thumn_${String(thumnIndex + 1).padStart(3, '0')}.jpg`
                 });
@@ -397,74 +370,43 @@
             });
             hizbSelector.value = currentHizbIndex;
         }
-
-        function populateAthmanList(hizbIndex, filter = '') {
+        
+        function populateAthmanListForHizb(hizbIndex) {
             const hizb = quranData[hizbIndex];
             athmanList.innerHTML = '';
-            
-            const athmanToDisplay = hizb.athman.filter(thumn => thumn.title.toLowerCase().includes(filter.toLowerCase()));
-
-            athmanToDisplay.forEach(thumn => {
-                const originalIndex = hizb.athman.indexOf(thumn);
-                const globalThumnNumber = hizbIndex * 8 + originalIndex + 1;
+            hizb.athman.forEach((thumn, thumnIndex) => {
                 const li = document.createElement('li');
                 li.className = 'athman-list-item';
-                li.dataset.index = originalIndex;
-                
-                li.innerHTML = `
-                    <span class="thumn-number">${String(globalThumnNumber).padStart(3, '0')}</span>
-                    <span class="thumn-title">${thumn.title}</span>
-                `;
+                li.dataset.hizbIndex = hizbIndex;
+                li.dataset.thumnIndex = thumnIndex;
+                const globalThumnNumber = hizbIndex * 8 + thumnIndex + 1;
+                li.textContent = String(globalThumnNumber).padStart(3, '0');
+                li.title = thumn.title;
                 
                 li.addEventListener('click', () => {
-                    currentThumnIndex = originalIndex;
-                    loadThumn(true);
+                    if (currentHizbIndex !== hizbIndex || currentThumnIndex !== thumnIndex) {
+                        currentHizbIndex = hizbIndex;
+                        currentThumnIndex = thumnIndex;
+                        loadThumn(true);
+                    }
                 });
                 athmanList.appendChild(li);
             });
             updateActiveListItem();
         }
 
-        function searchAll(query) {
-             athmanList.innerHTML = '';
-             if (!query) {
-                populateAthmanList(currentHizbIndex);
-                return;
-             }
-             quranData.forEach((hizb, hizbIndex) => {
-                hizb.athman.forEach((thumn, thumnIndex) => {
-                    if(thumn.title.toLowerCase().includes(query.toLowerCase())) {
-                        const globalThumnNumber = hizbIndex * 8 + thumnIndex + 1;
-                        const li = document.createElement('li');
-                        li.className = 'athman-list-item';
-                        
-                        li.innerHTML = `
-                            <span class="thumn-number" style="color: #6c757d;">${hizb.hizb_number}</span>
-                            <span class="thumn-title">${thumn.title}</span>
-                        `;
-
-                        li.addEventListener('click', () => {
-                            currentHizbIndex = hizbIndex;
-                            currentThumnIndex = thumnIndex;
-                            hizbSelector.value = hizbIndex;
-                            searchInput.value = '';
-                            loadThumn(true);
-                        });
-                        athmanList.appendChild(li);
-                    }
-                });
-             });
-        }
-        
         function loadThumn(playImmediately = false) {
             if (currentHizbIndex < 0 || currentThumnIndex < 0) return;
-            
-            populateAthmanList(currentHizbIndex);
             
             const hizb = quranData[currentHizbIndex];
             const thumn = hizb.athman[currentThumnIndex];
 
+            if (searchInput.value === '') { 
+                populateAthmanListForHizb(currentHizbIndex);
+            }
             currentThumnTitle.textContent = thumn.title;
+            
+            // Correct, simplified path
             const audioPath = `audio/${encodeURIComponent(thumn.audio_file)}`;
             const imagePath = `images/${encodeURIComponent(thumn.image_file)}`;
 
@@ -473,7 +415,7 @@
             
             quranImage.onerror = () => {
                 quranImage.src = 'https://via.placeholder.com/1200x1800/FFFFFF/2E86C1?text=خطأ+في+تحميل+الصورة';
-            }
+            };
 
             if (playImmediately) {
                 audioPlayer.play().catch(e => {
@@ -483,21 +425,48 @@
             }
         }
 
+        function handleSearch(query) {
+            athmanList.innerHTML = '';
+            if (!query) {
+                populateAthmanListForHizb(currentHizbIndex);
+                return;
+            }
+            quranData.forEach((hizb, hizbIndex) => {
+                hizb.athman.forEach((thumn, thumnIndex) => {
+                    if (thumn.title.includes(query)) {
+                        const li = document.createElement('li');
+                        li.className = 'athman-list-item';
+                        li.textContent = `(${hizb.hizb_number}) ${thumn.title.substring(0,25)}...`;
+                        li.title = thumn.title;
+                        li.addEventListener('click', () => {
+                            currentHizbIndex = hizbIndex;
+                            currentThumnIndex = thumnIndex;
+                             hizbSelector.value = hizbIndex;
+                            searchInput.value = '';
+                            loadThumn(true);
+                        });
+                        athmanList.appendChild(li);
+                    }
+                });
+            });
+        }
+        
         function updateActiveListItem() {
             const listItems = athmanList.querySelectorAll('.athman-list-item');
             listItems.forEach(item => {
-                const itemIndex = parseInt(item.dataset.index);
-                if (itemIndex === currentThumnIndex) {
+                const hizbIdx = parseInt(item.dataset.hizbIndex);
+                const thumnIdx = parseInt(item.dataset.thumnIndex);
+                if (hizbIdx === currentHizbIndex && thumnIdx === currentThumnIndex) {
                     item.classList.add('active');
-                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 } else {
                     item.classList.remove('active');
                 }
             });
         }
-        
+
         function formatTime(seconds) {
-            if (isNaN(seconds)) return "0:00";
+            if(isNaN(seconds)) return "0:00";
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
@@ -509,25 +478,17 @@
             
             const hizb = quranData[currentHizbIndex];
             const zip = new JSZip();
-            const promises = [];
-
-            hizb.athman.forEach(thumn => {
-                const url = `${GITHUB_RAW_BASE_URL}audio/${encodeURIComponent(thumn.audio_file)}`;
-                const promise = fetch(url)
-                    .then(response => {
-                        if (!response.ok) throw new Error(`Failed to fetch ${thumn.audio_file}`);
-                        return response.blob();
-                    })
-                    .then(blob => {
-                        const cleanTitle = thumn.title.replace(/[\\/:*?"<>|]/g, ''); 
-                        zip.file(`${cleanTitle}.mp3`, blob);
-                    })
-                    .catch(error => console.error(error));
-                promises.push(promise);
-            });
             
             try {
-                await Promise.all(promises);
+                for (const thumn of hizb.athman) {
+                     const url = `${GITHUB_RAW_BASE_URL}audio/${encodeURIComponent(thumn.audio_file)}`;
+                     const response = await fetch(url);
+                     if (!response.ok) throw new Error(`Failed to fetch ${thumn.audio_file}`);
+                     const blob = await response.blob();
+                     const cleanTitle = thumn.title.replace(/[\\/:*?"<>|]/g, '');
+                     zip.file(`${cleanTitle}.mp3`, blob);
+                }
+                
                 loadingOverlay.textContent = "جاري ضغط الملفات...";
                 const content = await zip.generateAsync({type:"blob"});
                 const cleanHizbName = hizb.hizb_name.replace(/[\\/:*?"<>|]/g, '');
@@ -543,14 +504,14 @@
 
         // --- Event Listeners ---
         hizbSelector.addEventListener('change', (e) => {
+            searchInput.value = '';
             currentHizbIndex = parseInt(e.target.value);
             currentThumnIndex = -1; 
-            searchInput.value = '';
-            populateAthmanList(currentHizbIndex);
-            currentThumnTitle.textContent = 'اختر ثمنًا من القائمة';
+            populateAthmanListForHizb(currentHizbIndex);
+            currentThumnTitle.textContent = 'اختر ثمنًا من الشريط أعلاه';
         });
         
-        searchInput.addEventListener('input', (e) => searchAll(e.target.value));
+        searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
         downloadHizbBtn.addEventListener('click', downloadHizbAsZip);
 
         playPauseBtn.addEventListener('click', () => {
@@ -566,8 +527,10 @@
         audioPlayer.addEventListener('pause', () => { isPlaying = false; playPauseBtn.textContent = '⏯'; });
         
         audioPlayer.addEventListener('timeupdate', () => {
-            timeline.value = audioPlayer.currentTime;
-            currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            if (audioPlayer.duration) {
+                timeline.value = audioPlayer.currentTime;
+                currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            }
         });
         audioPlayer.addEventListener('loadedmetadata', () => {
              timeline.max = audioPlayer.duration;
@@ -620,7 +583,7 @@
         // --- Initial Load ---
         function init() {
             populateHizbSelector();
-            populateAthmanList(currentHizbIndex);
+            populateAthmanListForHizb(currentHizbIndex);
         }
 
         init();
